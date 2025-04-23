@@ -29,19 +29,20 @@ public class SecurityConfig {
 //                .cors()
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                        sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(
 auth ->
                     auth
-                            .requestMatchers("/api/**", "/swagger-ui/**","/v3/api-docs/**") // 여러 개를 한 번에 넣어도 된다...
-                                .permitAll()
-                            .anyRequest()
+                            .requestMatchers("/swagger-ui/**","/v3/api-docs/**")
+                                .permitAll() // Swagger는 다 접근 시켜
+                            .requestMatchers("/api/auth/**") // 가입, 로그인.
+                                .permitAll() // Refresh Token 이라... 하...
+                            .anyRequest() // /api/나머지
                                 .authenticated()
                 )
                 .authenticationProvider(daoAuthProvider())
                 .addFilterBefore(jwtFilter(),
                         UsernamePasswordAuthenticationFilter.class);
-//                .formLogin(Customizer.withDefaults())
-//                .logout(Customizer.withDefaults());
         return http.build();
     }
 
