@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/token")
     public ResponseEntity<AuthTokenDTO> login(@RequestBody UserRequestDTO dto) throws BadRequestException {
-
+        return ResponseEntity.ok(new AuthTokenDTO(""));
     }
 
     @ExceptionHandler(BadRequestException.class)
